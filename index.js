@@ -11,6 +11,7 @@ const multer = require("multer");
 dotenv.config();
 app.use(express.json());
 
+//Database Connection
 mongoose.connect(process.env.MONGO_URL,{
     useNewUrlParser: true,
     useUnifiedTopology:true,
@@ -18,6 +19,7 @@ mongoose.connect(process.env.MONGO_URL,{
 .then(console.log("connected to Mongo DB"))
 .catch((err) => console.log(err));
 
+//File Storage
 const storage = multer.diskStorage({
     destination:(req,file,cb) => {
         cb(null,"files")
@@ -31,11 +33,13 @@ app.post("/api/upload", upload.single("file"),(req,res) => {
     res.status(200).json("files has been uploaded ")
 })
 
+//route
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 
+//Server Testing
 app.listen("5000", () => {
     console.log("Backend is Running")
 })
